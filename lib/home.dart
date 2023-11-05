@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'routes.dart';
 import 'settings.dart';
+import 'package:http/http.dart' as http; // Import the http package
+import 'dart:convert'; // Import the package for JSON decoding
 
 void main() {
   runApp(MaterialApp(
@@ -76,12 +78,56 @@ class _HomeAppBar extends StatelessWidget {
   }
 }
 
-class __HomeBodyPage extends StatelessWidget {
+class __HomeBodyPage extends StatefulWidget {
+  @override
+  _HomeBodyPageState createState() => _HomeBodyPageState();
+}
+
+class _HomeBodyPageState extends State<__HomeBodyPage> {
+  List<dynamic> countriesData = []; // To store the fetched data
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final response = await http
+        .get(Uri.parse('https://restcountries.com/v3.1/all?fields=name,eng'));
+
+    if (response.statusCode == 200) {
+      setState(() {
+        // Parse the response data and store it in countriesData
+        countriesData = json.decode(response.body);
+      });
+    } else {
+      throw Exception('Failed to load data from the API');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Text('This is a custom body widget'),
-    );
+        child: countriesData.isEmpty
+            ? CircularProgressIndicator() // Show a loading indicator while fetching data
+            : ListView.builder(
+                itemCount: countriesData.length,
+                itemBuilder: (context, index) {
+                  final country = countriesData[index];
+                  final name = country['name'];
+                  final capital = country['capital'];
+
+                  return ListTile(
+                    title: Text(name != null && name.containsKey('common')
+                        ? name['common']
+                        : 'N/A'),
+                    subtitle: Text(capital != null && capital.isNotEmpty
+                        ? capital[0]
+                        : 'N/A'),
+                  );
+                },
+              ));
   }
 }
 
