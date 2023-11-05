@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:midterm_bayer/primarybutton.dart';
-import 'package:midterm_bayer/secondarybutton.dart';
+import 'customtextformfield.dart';
+import 'primarybutton.dart';
+import 'passwordfield.dart';
 import 'routes.dart';
 import 'home.dart';
 
@@ -21,15 +22,16 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool obscureText = true;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.green[200],
         body: Container(
-          color: Colors.white,
+          color: Colors.green[200],
           alignment: Alignment.topCenter,
-          padding: EdgeInsets.symmetric(horizontal: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: SingleChildScrollView(
             child: Column(
               children: [
@@ -37,26 +39,32 @@ class _LoginScreenState extends State<LoginScreen> {
                   height: 20.0,
                 ),
                 const CustomTextFormField(
-                    labelText: "Email Address",
-                    hintText: "Enter a valid email",
-                    iconData: Icons.email,
-                    textInputType: TextInputType.emailAddress),
+                  labelText: "Email Address",
+                  hintText: "Enter a valid email",
+                  iconData: Icons.email,
+                  textInputType: TextInputType.emailAddress,
+                ),
                 const SizedBox(
                   height: 20.0,
                 ),
                 PasswordField(
-                    labelText: "Password",
-                    hintText: "Enter your password",
-                    obscureText: obscureText,
-                    onTap: setPasswordVisibility),
+                  labelText: "Password",
+                  hintText: "Enter your password",
+                  obscureText: obscureText,
+                  onTap: setPasswordVisibility,
+                ),
                 const SizedBox(
                   height: 20.0,
                 ),
                 PrimaryButton(
-                    text: "Login", iconData: Icons.login, onPressed: login),
+                  text: "Login",
+                  iconData: Icons.login,
+                  onPressed: login,
+                ),
                 const SizedBox(
                   height: 20.0,
                 ),
+                ImageBelowLoginButton(), // Adding the custom image widget
               ],
             ),
           ),
@@ -66,12 +74,28 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void login() {
-    Navigator.pushNamed(context, home.routeName);
+    Navigator.pushNamed(context, HomeScreen.routeName);
   }
 
   void setPasswordVisibility() {
     setState(() {
       obscureText = !obscureText;
     });
+  }
+}
+
+class ImageBelowLoginButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        const SizedBox(height: 10.0),
+        Image.asset(
+          'assets/earthLOGO2.png', // Replace with the path to your image asset
+          width: 200.0,
+          height: 200.0,
+        ),
+      ],
+    );
   }
 }

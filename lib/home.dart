@@ -1,59 +1,46 @@
 import 'package:flutter/material.dart';
 import 'routes.dart';
+import 'settings.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(
+    home: HomeScreen(),
+    routes: routes,
+  ));
 }
 
-class MyApp extends StatelessWidget {
+class HomeScreen extends StatelessWidget {
+  static const String routeName = "home"; // Define a routeName property
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: home(),
-      routes: routes,
-    );
+    return _HomeScreenState(); // Create an instance of _HomeScreenState
   }
 }
 
-class home extends StatefulWidget {
-  static const String routeName = "home";
-
-  @override
-  _homeState createState() => _homeState();
-}
-
-class _homeState extends State<home> {
-  final TextEditingController _textFieldController = TextEditingController();
-  final List<String> posts = [];
-
-  void _addPost(String postText) {
-    setState(() {
-      posts.add(postText);
-      _textFieldController.clear();
-    });
-  }
-
+class _HomeScreenState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Color(0xFF191923),
         shape: const Border(bottom: BorderSide(color: Colors.white, width: 2)),
         title: Row(
           children: <Widget>[
             GestureDetector(
-              onTap: () {
-                // Handle user icon click
-                userprofile(context); // Call the function with context
-              },
-              child: Icon(
-                Icons.account_circle_rounded,
-                color: Colors.white,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                child: Image.asset(
+                  'assets/earthLOGO2.png', // Replace with the path to your image asset
+                  width: 28, // Set the width as needed
+                  height: 28, // Set the height as needed
+                  color: Colors.white, // You can set the color of the image
+                ),
               ),
             ),
             const SizedBox(width: 8),
             const Text(
-              "home",
+              "Dashboard",
               style: TextStyle(
                 color: Colors.white,
               ),
@@ -61,27 +48,31 @@ class _homeState extends State<home> {
           ],
         ),
         automaticallyImplyLeading: false,
-        
-      ),
-      backgroundColor: Colors.black,
-      body: Column(
-        children: <Widget>[
-          PostInput(onAddPost: _addPost),
-          Expanded(
-            child: ListView.builder(
-              itemCount: posts.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  children: <Widget>[
-                    Post(text: posts[index]),
-                    SizedBox(height: 5.0),
-                  ],
-                );
-              },
+        actions: [
+          GestureDetector(
+            onTap: () {
+              userprofile(
+                  context); // Call the function to navigate to the settings page
+            },
+            child: const Padding(
+              padding: EdgeInsets.symmetric(
+                  horizontal: 16.0), // Adjust the padding as needed
+              child: Icon(
+                Icons.settings,
+                color: Colors.white,
+              ),
             ),
           ),
         ],
       ),
+      body: const Center(
+        child: Text('Welcome to the home page!'),
+      ),
     );
   }
+}
+
+//Navigation menu
+void userprofile(BuildContext context) {
+  Navigator.pushNamed(context, settings.routeName);
 }
