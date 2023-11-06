@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'routes.dart';
 import 'settings.dart';
 import 'details.dart';
+import 'search.dart';
+import 'contact.dart';
 import 'package:http/http.dart' as http; // Import the http package
 import 'dart:convert'; // Import the package for JSON decoding
 
@@ -132,8 +134,7 @@ class _HomeBodyPageState extends State<_HomeBodyPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => CountryDetailsPage(
-                          countryName: name[
-                              'common'],
+                          countryName: name['common'],
                         ),
                       ),
                     );
@@ -164,8 +165,17 @@ class _HomeFooter extends StatelessWidget {
         BottomNavigationBarItem(
           icon: Icon(Icons.local_phone_rounded),
           label: "Contact",
-        )
+        ),
       ],
+      onTap: (int index) {
+        if (index == 1) {
+          // Navigate to the Dashboard screen
+          Navigator.pushNamed(context, SearchScreen.routeName);
+        } else if (index == 2) {
+          // Navigate to the Contact screen
+          Navigator.pushNamed(context, ContactScreen.routeName);
+        }
+      },
     );
   }
 }
