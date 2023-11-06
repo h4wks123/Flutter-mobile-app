@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'routes.dart';
 import 'settings.dart';
+import 'details.dart';
 import 'package:http/http.dart' as http; // Import the http package
 import 'dart:convert'; // Import the package for JSON decoding
 
@@ -22,7 +23,7 @@ class HomeScreen extends StatelessWidget {
         child: _HomeAppBar(),
       ),
       body: Center(
-        child: __HomeBodyPage(),
+        child: _HomeBodyPage(),
       ),
       bottomNavigationBar: _HomeFooter(),
     );
@@ -78,13 +79,13 @@ class _HomeAppBar extends StatelessWidget {
   }
 }
 
-class __HomeBodyPage extends StatefulWidget {
+class _HomeBodyPage extends StatefulWidget {
   @override
   _HomeBodyPageState createState() => _HomeBodyPageState();
 }
 
-class _HomeBodyPageState extends State<__HomeBodyPage> {
-  List<dynamic> countriesData = []; // To store the fetched data
+class _HomeBodyPageState extends State<_HomeBodyPage> {
+  List<dynamic> countriesData = [];
 
   @override
   void initState() {
@@ -93,12 +94,11 @@ class _HomeBodyPageState extends State<__HomeBodyPage> {
   }
 
   Future<void> fetchData() async {
-    final response = await http
-        .get(Uri.parse('https://restcountries.com/v3.1/all?fields=name,eng'));
+    final response = await http.get(Uri.parse(
+        'https://restcountries.com/v3.1/all?fields=name,eng,capital'));
 
     if (response.statusCode == 200) {
       setState(() {
-        // Parse the response data and store it in countriesData
         countriesData = json.decode(response.body);
       });
     } else {
@@ -109,25 +109,39 @@ class _HomeBodyPageState extends State<__HomeBodyPage> {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: countriesData.isEmpty
-            ? CircularProgressIndicator() // Show a loading indicator while fetching data
-            : ListView.builder(
-                itemCount: countriesData.length,
-                itemBuilder: (context, index) {
-                  final country = countriesData[index];
-                  final name = country['name'];
-                  final capital = country['capital'];
+      child: countriesData.isEmpty
+          ? CircularProgressIndicator()
+          : ListView.builder(
+              itemCount: countriesData.length,
+              itemBuilder: (context, index) {
+                final country = countriesData[index];
+                final name = country['name'];
+                final capital = country['capital'];
 
-                  return ListTile(
-                    title: Text(name != null && name.containsKey('common')
+                return ListTile(
+                  title: Text(
+                    name != null && name.containsKey('common')
                         ? name['common']
-                        : 'N/A'),
-                    subtitle: Text(capital != null && capital.isNotEmpty
-                        ? capital[0]
-                        : 'N/A'),
-                  );
-                },
-              ));
+                        : 'N/A',
+                  ),
+                  subtitle: Text(
+                    capital != null && capital.isNotEmpty ? capital[0] : 'N/A',
+                  ),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => CountryDetailsPage(
+                          countryName: name[
+                              'common'],
+                        ),
+                      ),
+                    );
+                  },
+                );
+              },
+            ),
+    );
   }
 }
 
@@ -137,6 +151,7 @@ class _HomeFooter extends StatelessWidget {
     return BottomNavigationBar(
       backgroundColor: Color(0xFF191923),
       unselectedItemColor: Colors.white,
+      selectedItemColor: Color(0xFF01BE96),
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.dashboard),
