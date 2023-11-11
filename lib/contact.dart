@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:contactus/contactus.dart';
 import 'routes.dart';
 import 'settings.dart';
 import 'details.dart';
@@ -32,7 +33,8 @@ class _ContactAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Color(0xFF191923),
-      shape: const Border(bottom: BorderSide(color: Colors.white, width: 2)),
+      shape:
+          const Border(bottom: BorderSide(color: Color(0xFF2D2D39), width: 2)),
       title: Row(
         children: <Widget>[
           GestureDetector(
@@ -84,10 +86,25 @@ class _ContactBodyPage extends StatefulWidget {
 class _ContactBodyPageState extends State<_ContactBodyPage> {
   @override
   Widget build(BuildContext context) {
-    // Your contact page content
     return Scaffold(
+      backgroundColor: Color(0xFF2D2D39),
       body: Center(
-        child: Text('Welcome to the contacts page!'),
+        child: ContactUs(
+          logo: AssetImage('assets/profile_bayer.jpg'),
+          email: 'ivannebayer@gmail.com',
+          companyName: 'Ivanne Bayer',
+          phoneNumber: '',
+          dividerThickness: 2,
+          githubUserName: 'h4wks123',
+          linkedinURL: '',
+          tagLine: 'Carolinian Student Developer',
+          twitterHandle: 'ivannebayr',
+          textColor: Colors.white,
+          cardColor: Color(0xFF01BE96),
+          companyColor: Colors.white,
+          taglineColor: Color(0xFF01BE96),
+          dividerColor: Color(0xFF01BE96), // Change the color of the divider
+        ),
       ),
     );
   }

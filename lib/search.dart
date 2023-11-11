@@ -34,7 +34,8 @@ class _SearchAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Color(0xFF191923),
-      shape: const Border(bottom: BorderSide(color: Colors.white, width: 2)),
+      shape:
+          const Border(bottom: BorderSide(color: Color(0xFF2D2D39), width: 2)),
       title: Row(
         children: <Widget>[
           GestureDetector(

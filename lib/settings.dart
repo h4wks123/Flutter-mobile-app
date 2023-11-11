@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'main.dart';
 import 'routes.dart';
 
 void main() {
@@ -12,37 +13,74 @@ class settings extends StatelessWidget {
   Widget build(BuildContext context) {
     // Your settings page content
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('settings Page'),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(kToolbarHeight),
+        child: _SettingsAppBar(),
       ),
-      body: const Center(
-        child: Text('Welcome to the settings page!'),
+      body: Center(
+        child: _SettingsBodyPage(),
       ),
     );
   }
 }
 
-class  MySettingsPage extends StatelessWidget {
+class _SettingsAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('My Flutter App'),
+    return AppBar(
+      backgroundColor: Color(0xFF191923),
+      shape:
+          const Border(bottom: BorderSide(color: Color(0xFF2D2D39), width: 2)),
+      title: Row(
+        children: <Widget>[
+          const SizedBox(width: 8),
+          const Text(
+            "Search",
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ],
       ),
-      body: Center(
+    );
+  }
+}
+
+class _SettingsBodyPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Container(
+        padding: EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'Welcome to My Flutter App!',
-              style: TextStyle(fontSize: 24),
+          children: [
+            Text(
+              'Are you sure you want to leave?',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: Colors.black, // Set the text color
+              ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 32), // Add more space between the text and button
             ElevatedButton(
               onPressed: () {
-                // Navigate to another page or perform an action
+                Navigator.pushNamed(context, LoginScreen.routeName);
               },
-              child: Text('Click Me'),
+              style: ElevatedButton.styleFrom(
+                primary: Color(0xFF01BE96), // Set the button color to green
+                padding: EdgeInsets.symmetric(
+                    horizontal: 40, vertical: 16), // Increase button size
+              ),
+              child: Text(
+                'Logout',
+                style: TextStyle(
+                  fontSize: 18, // Adjust button text size
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),
